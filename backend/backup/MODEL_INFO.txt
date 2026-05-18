@@ -1,0 +1,7 @@
+Large RoBERTa checkpoint weights are not uploaded to GitHub due to GitHub file size limitations.
+
+Download checkpoint weights from:
+[https://drive.google.com/drive/folders/14FlBVscJicX-30Y0Zu2txXqJ-pXwusWY?usp=drive_link]
+
+After downloading:
+Place best_roberta_phishing.pt inside this folder.

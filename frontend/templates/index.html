@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PhishGuard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+<header class="header">
+  <div class="container header-inner">
+    <div class="logo">
+      <div class="logo-shield">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2L20 6v7c0 4.5-3.8 7.5-9 9C5.8 20.5 2 17.5 2 13V6L11 2z" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 11l2 2.5 4-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">PhishGuard</div>
+        <div class="logo-sub">AI Threat Detection</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-page="scanner">Scanner</button>
+      <button class="nav-btn" data-page="history">History</button>
+      <button class="nav-btn" data-page="tips">Safety Tips</button>
+    </nav>
+    <div class="model-pills">
+      <span class="pill pill-green">XGBoost</span>
+      <span class="pill pill-teal">RoBERTa</span>
+      <span class="pill pill-olive">LLaVA</span>
+    </div>
+  </div>
+</header>
+<main class="main-wrap">
+
+<!-- SCANNER PAGE -->
+<div class="page active" id="page-scanner">
+<div class="container">
+  <div class="reported-banner hidden" id="reported-banner">
+    <strong>Warning:</strong> You previously reported this URL as spam/phishing.
+  </div>
+  <div class="scan-tabs">
+    <button class="scan-tab active" data-tab="url">URL Scan</button>
+    <button class="scan-tab" data-tab="email">Email Scan</button>
+    <button class="scan-tab" data-tab="screenshot">Screenshot</button>
+    <button class="scan-tab" data-tab="image">Image Upload</button>
+    <button class="scan-tab" data-tab="qr">QR Code</button>
+  </div>
+  <div class="scan-card">
+    <!-- URL PANEL -->
+    <div class="tab-panel active" id="tab-url">
+      <div class="panel-header">
+        <h2 class="panel-title">URL Analysis</h2>
+        <p class="panel-desc">Paste any suspicious URL. We analyze structure with XGBoost and check WHOIS domain age intelligence.</p>
+      </div>
+      <div class="input-row">
+        <input class="text-input" id="url-input" type="text" placeholder="https://suspicious-site.com/verify-account"/>
+        <button class="btn-primary" id="btn-scan-url">Scan URL</button>
+      </div>
+      <label class="checkbox-wrap">
+        <input type="checkbox" id="url-screenshot-toggle"/>
+        <span class="checkbox-box"></span>
+        Also capture and analyze screenshot with LLaVA
+      </label>
+    </div>
+    <!-- EMAIL PANEL -->
+    <div class="tab-panel" id="tab-email">
+      <div class="panel-header">
+        <h2 class="panel-title">Email Analysis</h2>
+        <p class="panel-desc">Paste the full email text. RoBERTa detects phishing language, urgency tactics, and credential requests.</p>
+      </div>
+      <textarea class="text-input textarea" id="email-input" placeholder="Paste full email content here..."></textarea>
+      <button class="btn-primary" id="btn-scan-email">Analyze Email</button>
+    </div>
+    <!-- SCREENSHOT PANEL -->
+    <div class="tab-panel" id="tab-screenshot">
+      <div class="panel-header">
+        <h2 class="panel-title">Screenshot Capture</h2>
+        <p class="panel-desc">Enter a URL. PhishGuard captures a screenshot silently without opening it in your browser, then scores it with LLaVA vision AI.</p>
+      </div>
+      <div class="input-row">
+        <input class="text-input" id="screenshot-input" type="text" placeholder="https://example.com"/>
+        <button class="btn-primary" id="btn-scan-screenshot">Capture + Score</button>
+      </div>
+    </div>
+    <!-- IMAGE UPLOAD PANEL -->
+    <div class="tab-panel" id="tab-image">
+      <div class="panel-header">
+        <h2 class="panel-title">Direct Image Scoring</h2>
+        <p class="panel-desc">Upload any screenshot of a website. LLaVA will visually analyze it for phishing indicators such as fake logins, urgency messages, and suspicious forms.</p>
+      </div>
+      <div class="upload-zone" id="image-dropzone">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="3" y="5" width="34" height="30" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 28l9-10 8 8 6-6 9 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="12" cy="14" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+        <div class="upload-text">Drop website screenshot here</div>
+        <div class="upload-hint">PNG, JPG, WEBP — click to browse</div>
+        <input type="file" id="image-file" accept="image/*" class="file-hidden"/>
+      </div>
+      <div class="upload-preview hidden" id="image-preview-wrap">
+        <img id="image-preview-img" src="" alt="preview"/>
+        <button class="btn-remove" id="image-remove">Remove</button>
+      </div>
+      <button class="btn-primary" id="btn-scan-image">Score with LLaVA</button>
+    </div>
+    <!-- QR PANEL -->
+    <div class="tab-panel" id="tab-qr">
+      <div class="panel-header">
+        <h2 class="panel-title">QR Code Scanner</h2>
+        <p class="panel-desc">Upload a QR code image. PhishGuard decodes the embedded URL and runs a full threat analysis on it.</p>
+      </div>
+      <div class="upload-zone" id="qr-dropzone">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="3" y="3" width="15" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="22" y="3" width="15" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="22" width="15" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="22" y="22" width="15" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="7" y="7" width="7" height="7" rx="1" fill="currentColor" opacity="0.35"/><rect x="26" y="7" width="7" height="7" rx="1" fill="currentColor" opacity="0.35"/><rect x="7" y="26" width="7" height="7" rx="1" fill="currentColor" opacity="0.35"/><rect x="26" y="26" width="7" height="7" rx="1" fill="currentColor" opacity="0.35"/></svg>
+        <div class="upload-text">Drop QR code image here</div>
+        <div class="upload-hint">PNG, JPG, WEBP — click to browse</div>
+        <input type="file" id="qr-file" accept="image/*" class="file-hidden"/>
+      </div>
+      <div class="upload-preview hidden" id="qr-preview-wrap">
+        <img id="qr-preview-img" src="" alt="QR preview"/>
+        <button class="btn-remove" id="qr-remove">Remove</button>
+      </div>
+      <button class="btn-primary" id="btn-scan-qr">Decode + Scan</button>
+    </div>
+  </div>
+
+  <div class="loading-wrap hidden" id="loading">
+    <div class="loading-spinner"></div>
+    <div class="loading-label" id="loading-label">Analyzing...</div>
+  </div>
+
+  <div class="results-wrap hidden" id="results-section">
+    <div class="verdict-card" id="verdict-card">
+      <div class="verdict-left">
+        <div class="verdict-icon-wrap" id="verdict-icon-wrap">?</div>
+        <div class="verdict-info">
+          <div class="verdict-label-text">Threat Assessment</div>
+          <div class="verdict-main" id="verdict-main">—</div>
+          <div class="verdict-sub" id="verdict-sub"></div>
+        </div>
+      </div>
+      <div class="verdict-right">
+        <div class="ring-wrap">
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="44" fill="none" stroke="#e5ddd0" stroke-width="9"/>
+            <circle id="score-ring" cx="55" cy="55" r="44" fill="none" stroke="#2d6a4f" stroke-width="9" stroke-linecap="round" stroke-dasharray="276.46" stroke-dashoffset="276.46" transform="rotate(-90 55 55)" style="transition:stroke-dashoffset 1s ease,stroke 0.5s"/>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-pct" id="ring-pct">—</div>
+            <div class="ring-lbl">Risk</div>
+          </div>
+        </div>
+        <button class="btn-report hidden" id="btn-report">Report as Spam</button>
+      </div>
+    </div>
+
+    <div class="scores-grid" id="scores-grid"></div>
+    <div class="details-grid" id="details-grid"></div>
+
+    <div class="screenshot-card hidden" id="screenshot-card">
+      <div class="sc-header">
+        <h3 class="sc-title">Website Preview</h3>
+        <span class="redirect-badge hidden" id="redirect-badge">Redirect Detected</span>
+      </div>
+      <div class="sc-img-wrap">
+        <img id="sc-img" src="" alt="Website Screenshot"/>
+      </div>
+      <div class="sc-meta hidden" id="sc-meta"></div>
+      <div class="llava-box hidden" id="llava-box">
+        <div class="llava-label">LLaVA Visual Analysis</div>
+        <div id="llava-text"></div>
+      </div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-secondary" id="btn-new-scan">Run New Scan</button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- HISTORY PAGE -->
+<div class="page" id="page-history">
+<div class="container">
+  <div class="page-topbar">
+    <h1 class="page-title">Scan History</h1>
+    <button class="btn-danger-ghost" id="btn-clear">Clear All</button>
+  </div>
+  <div id="history-list"><div class="empty-state">No scans yet. Run a scan to see history here.</div></div>
+</div>
+</div>
+
+<!-- TIPS PAGE -->
+<div class="page" id="page-tips">
+<div class="container">
+  <h1 class="page-title" style="margin-bottom:32px">Phishing Safety Tips</h1>
+  <div class="tips-grid">
+    <div class="tip-card"><div class="tip-icon tip-green">🔗</div><h3>Never Click Unknown Links</h3><p>Always hover over links to see the real destination. Phishers disguise malicious URLs with trusted-looking text like "Click here to verify".</p></div>
+    <div class="tip-card"><div class="tip-icon tip-orange">📧</div><h3>Verify Sender Identity</h3><p>Check the actual email address, not just the display name. Attackers use addresses like support@paypa1.com instead of paypal.com.</p></div>
+    <div class="tip-card"><div class="tip-icon tip-red">⚡</div><h3>Urgency Is a Red Flag</h3><p>"Your account will be suspended in 24 hours!" Legitimate companies don't pressure you with artificial deadlines. Take time to verify.</p></div>
+    <div class="tip-card"><div class="tip-icon tip-blue">🔒</div><h3>HTTPS Alone Isn't Safe</h3><p>Phishing sites use HTTPS too. Always check the full domain — secure-login.paypal.verify-now.com is NOT PayPal.</p></div>
+    <div class="tip-card"><div class="tip-icon tip-teal">📱</div><h3>Scan QR Codes Before Opening</h3><p>QR codes can hide malicious URLs. Always preview the destination before opening. Use PhishGuard's QR scanner to stay safe.</p></div>
+    <div class="tip-card"><div class="tip-icon tip-olive">🌐</div><h3>New Domains Are Suspicious</h3><p>Phishing sites are often created days before attacks. A domain under 180 days old is a strong warning signal — PhishGuard checks this.</p></div>
+    <div class="tip-card"><div class="tip-icon tip-purple">🏦</div><h3>Banks Never Ask for Passwords</h3><p>No legitimate bank or government agency will ever ask for your password, PIN, or full SSN via email or SMS.</p></div>
+    <div class="tip-card"><div class="tip-icon tip-brown">📎</div><h3>Attachments Can Be Dangerous</h3><p>Malware is often hidden in Office docs, PDFs, or ZIP files. Never open attachments from unknown senders without scanning first.</p></div>
+  </div>
+</div>
+</div>
+
+</main>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
