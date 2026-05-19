@@ -426,9 +426,7 @@ Demo video covering:
 
 # Acknowledgment
 
-This project was developed as part of cybersecurity and AI research work at:
-
-Indian Institute of Information Technology Design and Manufacturing Jabalpur (IIITDMJ)
+Developed as an academic project exploring multimodal phishing detection using machine learning, NLP, computer vision, and cybersecurity techniques.
 
 ---
 
