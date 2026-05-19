@@ -228,7 +228,7 @@ The best model checkpoint was downloaded after training and integrated into the 
 ## ROC Curve
 
 <p align="center">
-  <img src="screenshots/roberta_roc_curve.png" alt="RoBERTa ROC Curve" width="650">
+  <img src="screenshots/roberta_roc.png" alt="RoBERTa ROC Curve" width="650">
 </p>
 
 ---
@@ -236,7 +236,7 @@ The best model checkpoint was downloaded after training and integrated into the 
 ## Confidence Distribution
 
 <p align="center">
-  <img src="screenshots/confidence_distribution.png" alt="Confidence Distribution" width="750">
+  <img src="screenshots/roberta_confidence_distribution.png" alt="Confidence Distribution" width="750">
 </p>
 
 ---
